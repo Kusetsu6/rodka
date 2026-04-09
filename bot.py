@@ -10,7 +10,7 @@ API_TOKEN = "8756157675:AAHO6Nk1hJUtNvs_y3-LF9EgFjhjmlnSK34"
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 
-@dp.message_handler(CommandStart())
+@dp.message(CommandStart())
 async def start(message: Message):
     await message.answer("Привіт я твій телеграм бот. Напиши /help або /about.")
 
