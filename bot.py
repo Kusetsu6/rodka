@@ -1,6 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.filters import Command
+from aiogram.filters import Command, CommandStart
 from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 
 
@@ -9,6 +9,18 @@ API_TOKEN = "8756157675:AAHO6Nk1hJUtNvs_y3-LF9EgFjhjmlnSK34"
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
+
+@dp.message_handler(CommandStart())
+async def start(message: Message):
+    await message.answer("Привіт я твій телеграм бот. Напиши /help або /about.")
+
+@dp.message(Command("help"))
+async def help_command(message: Message):
+    await message.answer("Ось, що я вмію:\n/start - привітання\n/help - довідка\n/about")
+
+@dp.message(Command("about"))
+async def about_command(message: Message):
+    await message.answer("я створений на Python з бібліотекою Aiogram!")
 
 
 @dp.message(Command("menu"))
