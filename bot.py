@@ -1,7 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.filters import Command
-from aiogram.types import Message, ReplyKeyboardMarkup,KeyboardButton
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
 
 
 
@@ -13,14 +13,15 @@ dp = Dispatcher()
 
 @dp.message(Command("menu"))
 async def show_menu(message: Message):
-    keyboard = ReplyKeyboardMarkup(keyboard=[
-        KeyboardButton(text ="Привіт"),
-        KeyboardButton(text = "Як справи?"),
-        KeyboardButton(text = "Анекдот")
+    keyboard = ReplyKeyboardMarkup(
+        keyboard=[
+            [KeyboardButton(text ="Привіт"), KeyboardButton(text = "Як справи?")],
+
+            [KeyboardButton(text = "Анекдот")]
     ],
         resize_keyboard=True
     )
-    await message.answer("Вибери опцію:")
+    await message.answer("Вибери опцію:", reply_markup=keyboard)
 
 
 
