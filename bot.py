@@ -26,7 +26,7 @@ async def about_command(message: Message):
     await message.answer("я створений на Python з бібліотекою Aiogram!")
 
 @dp.message(Command("shop"))
-async def shop_command(message: Message):
+async def show_shop(message: Message):
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
         [InlineKeyboardButton(text="Apple", callback_data=buy_callback.new(item="apple"))],
