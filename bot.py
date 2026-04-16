@@ -1,7 +1,8 @@
 import asyncio
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command, CommandStart
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
+from aiogram.filters.callback_data import CallbackData
+from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 
 
 
@@ -9,6 +10,8 @@ API_TOKEN = "8756157675:AAHO6Nk1hJUtNvs_y3-LF9EgFjhjmlnSK34"
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
+
+buy_callback = CallbackData("buy", "item")
 
 @dp.message(CommandStart())
 async def start(message: Message):
@@ -22,6 +25,22 @@ async def help_command(message: Message):
 async def about_command(message: Message):
     await message.answer("я створений на Python з бібліотекою Aiogram!")
 
+@dp.message(Command("shop"))
+async def shop_command(message: Message):
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+        [InlineKeyboardButton(text="Apple", callback_data=buy_callback.new(item="apple"))],
+        [InlineKeyboardButton(text="Banana", callback_data=buy_callback.new(item="banana"))],
+        [InlineKeyboardButton(text="grape", callback_data=buy_callback.new(item="grape"))],
+        ]
+    )
+    await message.answer("Що хочеш купити?", reply_markup=keyboard)
+
+@dp.callback_query(buy_callback.filter())
+async def handle_buy_callback(callback: CallbackQuery, callback_data: dict):
+    item = callback_data["item"]
+    await callback.message.answer(f"Ти обрав: {item.capitalize()}")
+    await callback.answer()
 
 @dp.message(Command("menu"))
 async def show_menu(message: Message):
